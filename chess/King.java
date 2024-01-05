@@ -4,7 +4,11 @@ public class King extends ChessPiece {
         super(c);
     }
 
+    public boolean isLegalMove(Move selectedMove) {
+        return true;
+    }
+
     public String toString() {
-        return "x";
+        return "k";
     }
 }

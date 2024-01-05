@@ -48,12 +48,31 @@ public class ChessBoard {
         }
     }
 
+    public void implementMove(Move move) {
+        SquarePos orgSquarePos = move.getOrgPos();
+        SquarePos destSquarePos = move.getDestPos();
+        ChessPiece movingPiece = squares[orgSquarePos.getXPos()][orgSquarePos.getYPos()].removePiece();
+        move.setKilledPiece(squares[destSquarePos.getXPos()][destSquarePos.getYPos()].placePiece(movingPiece));
+    }
+
+    public ChessPiece getMovingPiece(Move move) {
+        SquarePos orgSquarePos = move.getOrgPos();
+        return squares[orgSquarePos.getXPos()][orgSquarePos.getYPos()].getPiece();
+    }
+
     public void display() {
         for (int y = 8; y > 0; y--) {
+            System.out.print(" " + y + "   ");
             for (int x = 1; x < 9; x++) {
-                System.out.print(squares[x][y]);
+                System.out.print(squares[x][y] + " ");
             }
             System.out.println();
         }
+        System.out.println();
+        System.out.print("     ");
+        for (int letter = 65; letter < 73; letter++) {
+            System.out.print((char)(letter) + " ");
+        }
+        System.out.println();
     }
 }

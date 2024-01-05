@@ -15,12 +15,20 @@ public class Square {
         return color;
     }
 
-    public void placePiece(ChessPiece p) {
+    public ChessPiece placePiece(ChessPiece p) {
+        ChessPiece killedPiece = piece;
         piece = p;
+        return killedPiece;
     }
 
-    public void removePiece(ChessPiece p) {
+    public ChessPiece getPiece() {
+        return piece;
+    }
+
+    public ChessPiece removePiece() {
+        ChessPiece removedPiece = piece;
         piece = null;
+        return removedPiece;
     }
 
     public String toString() {

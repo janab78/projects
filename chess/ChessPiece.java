@@ -6,6 +6,8 @@ public abstract class ChessPiece {
         color = c;
     }
 
+    public abstract boolean isLegalMove(Move selectedMove);
+
     public ChessColor getColor() {
         return color;
     }

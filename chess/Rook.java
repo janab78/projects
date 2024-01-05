@@ -4,6 +4,10 @@ public class Rook extends ChessPiece {
         super(c);
     }
 
+    public boolean isLegalMove(Move selectedMove) {
+        return true;
+    }
+
     public String toString() {
         return "r";
     }

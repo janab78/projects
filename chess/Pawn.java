@@ -4,6 +4,10 @@ public class Pawn extends ChessPiece {
         super(c);
     }
 
+    public boolean isLegalMove(Move selectedMove) {
+        return true;
+    }
+
     public String toString() {
         return "p";
     }
