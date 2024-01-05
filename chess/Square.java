@@ -1,10 +1,21 @@
 public class Square {
     ChessColor color;
     ChessPiece piece;
+    int xPos, yPos;
 
-    public Square (ChessColor c) {
+    public Square (ChessColor c, int x, int y) {
         color = c;
         piece = null;
+        xPos = x;
+        yPos = y;
+    }
+
+    public int getXPos() {
+        return xPos;
+    }
+
+    public int getYPos() {
+        return yPos;
     }
 
     public boolean isOccupied() {

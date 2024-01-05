@@ -12,10 +12,10 @@ public class ChessBoard {
         for (int x = 1; x < 9; x++) {
             for (int y = 1; y < 9; y++) {
                 if (x % 2 == y % 2) {
-                    squares[x][y] = new Square(ChessColor.BLACK);
+                    squares[x][y] = new Square(ChessColor.BLACK, x, y);
                 }
                 else {
-                    squares[x][y] = new Square(ChessColor.WHITE);
+                    squares[x][y] = new Square(ChessColor.WHITE, x, y);
                 }
             }
         }
@@ -48,16 +48,14 @@ public class ChessBoard {
         }
     }
 
-    public void implementMove(Move move) {
-        SquarePos orgSquarePos = move.getOrgPos();
-        SquarePos destSquarePos = move.getDestPos();
-        ChessPiece movingPiece = squares[orgSquarePos.getXPos()][orgSquarePos.getYPos()].removePiece();
-        move.setKilledPiece(squares[destSquarePos.getXPos()][destSquarePos.getYPos()].placePiece(movingPiece));
+    public Square getSquare(int x, int y) {
+        return squares[x][y];
     }
 
-    public ChessPiece getMovingPiece(Move move) {
-        SquarePos orgSquarePos = move.getOrgPos();
-        return squares[orgSquarePos.getXPos()][orgSquarePos.getYPos()].getPiece();
+    public void implementMove(Move move) {
+        move.setKilledPiece(move.getDestSquare().removePiece());
+        move.getDestSquare().placePiece(move.getMovingPiece());
+        move.getOrgSquare().removePiece();
     }
 
     public void display() {

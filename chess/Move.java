@@ -1,20 +1,20 @@
 public class Move {
-    SquarePos origin;
-    SquarePos destination;
+    Square origin;
+    Square destination;
     ChessPiece movingPiece, killedPiece;
   
-    public Move(SquarePos from, SquarePos to) {
+    public Move(Square from, Square to) {
         origin = from;
         destination = to;
-        movingPiece = null;
+        movingPiece = from.getPiece();
         killedPiece = null;
     }
 
-    public SquarePos getOrgPos() {
+    public Square getOrgSquare() {
         return origin;
     }
 
-    public SquarePos getDestPos() {
+    public Square getDestSquare() {
         return destination;
     }
 

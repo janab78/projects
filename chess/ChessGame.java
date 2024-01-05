@@ -40,7 +40,11 @@ public class ChessGame {
             return null;
         }
         String[] inputParts = playerInput.trim().split("\\s+");
-        return new Move(new SquarePos(inputParts[0]), new SquarePos(inputParts[1]));
+        int origXPos = (int)(inputParts[0].charAt(0)) - 96;
+        int origYPos = (int)(inputParts[0].charAt(1)) - 48;
+        int destXPos = (int)(inputParts[1].charAt(0)) - 96;
+        int destYPos = (int)(inputParts[1].charAt(1)) - 48;
+        return new Move(board.getSquare(origXPos, origYPos), board.getSquare(destXPos, destYPos));
     } 
 
     public void nextMove() {
@@ -50,7 +54,7 @@ public class ChessGame {
             inputScanner.close();
         }
         else {
-            ChessPiece movingPiece = board.getMovingPiece(selectedMove);
+            ChessPiece movingPiece = selectedMove.getMovingPiece();
             if (movingPiece.isLegalMove(selectedMove)) {
                 board.implementMove(selectedMove);
                 allMoves.add(selectedMove);
