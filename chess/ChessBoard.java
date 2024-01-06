@@ -97,17 +97,20 @@ public class ChessBoard {
 
     public void display() {
         System.out.println();
+        System.out.println("     -------------------------------");
         for (int y = 8; y > 0; y--) {
-            System.out.print(" " + y + "   ");
+            System.out.print(" " + y + "  | ");
             for (int x = 1; x < 9; x++) {
                 System.out.print(squares[x][y] + " ");
+                System.out.print("| ");
             }
             System.out.println();
+            System.out.println("     -------------------------------");
         }
         System.out.println();
         System.out.print("     ");
         for (int letter = 65; letter < 73; letter++) {
-            System.out.print((char)(letter) + " ");
+            System.out.print((char)(letter) + "   ");
         }
         System.out.println();
     }
