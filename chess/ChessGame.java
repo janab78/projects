@@ -55,13 +55,23 @@ public class ChessGame {
         }
         else {
             ChessPiece movingPiece = selectedMove.getMovingPiece();
-            if (movingPiece.isLegalMove(selectedMove)) {
-                board.implementMove(selectedMove);
-                allMoves.add(selectedMove);
-                curTurn = curTurn.getOpposite();
+            if (movingPiece != null && movingPiece.getColor() == curTurn) {
+                if (movingPiece.isLegalMove(selectedMove)) {
+                    board.implementMove(selectedMove);
+                    allMoves.add(selectedMove);
+                    curTurn = curTurn.getOpposite();
+                }
+                else {
+                    System.out.println("Illegal move");
+                }
             }
             else {
-                System.out.println("Illegal move");
+                if (movingPiece == null) {
+                    System.out.println("No piece to move");
+                }
+                else {
+                    System.out.println(curTurn + " can not move a " + movingPiece.getColor() + " piece");
+                }
             }
         }
     }

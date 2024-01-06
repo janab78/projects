@@ -2,8 +2,8 @@ import java.lang.Math;
 
 public class Pawn extends ChessPiece {
 
-    public Pawn(ChessColor c) {
-        super(c);
+    public Pawn(ChessColor c, ChessBoard b) {
+        super(c, b);
     }
 
     public boolean isLegalMove(Move selectedMove) {
@@ -31,7 +31,7 @@ public class Pawn extends ChessPiece {
                 return true;
             }
             else if (destPiece == null && xMovement == 0 &&
-            yMovement == 2 && selectedMove.getOrgSquare().getYPos() == 7) {
+            yMovement == 2 && selectedMove.getOrgSquare().getYPos() == 7 && board.getPieceAtSquare(selectedMove.getOrgSquare().getXPos(), 6) == null) {
                 return true;
             }
             else if (destPiece == null && xMovement == 0 &&
