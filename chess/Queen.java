@@ -10,10 +10,15 @@ public class Queen extends ChessPiece {
         if (Math.abs(xMovement) == Math.abs(yMovement) || xMovement == 0 && yMovement != 0 || xMovement != 0 && yMovement == 0) {
             return board.isPathUnblocked(selectedMove);
         }
+        super.printWrongMove();
         return false;
     }
 
-    public String toString() {
+    public String getPieceSymbol() {
         return "q";
+    }
+
+    public String toString() {
+        return "queen";
     }
 }

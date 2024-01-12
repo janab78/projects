@@ -10,10 +10,15 @@ public class King extends ChessPiece {
         if (Math.abs(xMovement) == 1 && Math.abs(yMovement) == 1 || xMovement == 0 && Math.abs(yMovement) == 1 || Math.abs(xMovement) == 1 && yMovement == 0) {
             return board.isPathUnblocked(selectedMove);
         }
+        super.printWrongMove();
         return false;
     }
 
-    public String toString() {
+    public String getPieceSymbol() {
         return "k";
+    }
+
+    public String toString() {
+        return "king";
     }
 }

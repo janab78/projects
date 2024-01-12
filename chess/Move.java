@@ -33,4 +33,8 @@ public class Move {
     public ChessPiece getMovingPiece() {
         return movingPiece;
     }
+
+    public String toString() {
+        return origin + " " + destination;
+    }
 }

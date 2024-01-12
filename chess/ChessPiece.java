@@ -10,7 +10,13 @@ public abstract class ChessPiece {
 
     public abstract boolean isLegalMove(Move selectedMove);
 
+    public abstract String getPieceSymbol();
+
     public ChessColor getColor() {
         return color;
+    }
+
+    public void printWrongMove() {
+        System.out.println(this + " cannot move like that");
     }
 }

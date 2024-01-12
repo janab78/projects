@@ -12,10 +12,15 @@ public class Bishop extends ChessPiece {
         if (Math.abs(xMovement) == Math.abs(yMovement)) {
             return board.isPathUnblocked(selectedMove);
         }
+        super.printWrongMove();
         return false;
     }
 
-    public String toString() {
+    public String getPieceSymbol() {
         return "b";
+    }
+
+    public String toString() {
+        return "bishop";
     }
 }

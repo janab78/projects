@@ -14,10 +14,19 @@ public class Knight extends ChessPiece {
         if ((Math.abs(xMovement) == 1 && Math.abs(yMovement) == 2 || Math.abs(xMovement) == 2 && Math.abs(yMovement) == 1) && destEmptyOrEnemy) {
             return true;
         }
+        else if (destEmptyOrEnemy == false) {
+            System.out.println("You cannot capture your own piece");
+            return false;
+        }
+        super.printWrongMove();
         return false;
     }
 
-    public String toString() {
+    public String getPieceSymbol() {
         return "n";
+    }
+
+    public String toString() {
+        return "knight";
     }
 }

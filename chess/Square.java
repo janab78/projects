@@ -42,15 +42,19 @@ public class Square {
         return removedPiece;
     }
 
-    public String toString() {
+    public String getPieceSymbol() {
         if (piece == null) {
             return " ";
         }
         if (piece.getColor() == ChessColor.WHITE) {
-            return piece.toString().toUpperCase();
+            return piece.getPieceSymbol().toUpperCase();
         }
         else {
-            return piece.toString();
+            return piece.getPieceSymbol();
         }
+    }
+
+    public String toString() {
+        return "" + (char)(xPos + 64) + yPos;
     }
 }

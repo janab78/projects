@@ -54,6 +54,7 @@ public class ChessGame {
             inputScanner.close();
         }
         else {
+            clearScreen();
             ChessPiece movingPiece = selectedMove.getMovingPiece();
             if (movingPiece != null && movingPiece.getColor() == curTurn) {
                 if (movingPiece.isLegalMove(selectedMove)) {
@@ -62,7 +63,7 @@ public class ChessGame {
                     curTurn = curTurn.getOpposite();
                 }
                 else {
-                    System.out.println("Illegal move");
+                    System.out.println("Illegal move: " + selectedMove);
                 }
             }
             else {
@@ -74,5 +75,10 @@ public class ChessGame {
                 }
             }
         }
+    }
+
+    public void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

@@ -10,10 +10,15 @@ public class Rook extends ChessPiece {
         if (xMovement == 0 && yMovement != 0 || xMovement != 0 && yMovement == 0) {
             return board.isPathUnblocked(selectedMove);
         }
+        super.printWrongMove();
         return false;
     }
 
-    public String toString() {
+    public String getPieceSymbol() {
         return "r";
+    }
+
+    public String toString() {
+        return "rook";
     }
 }

@@ -39,10 +39,15 @@ public class Pawn extends ChessPiece {
                 return true;
             }
         }
+        super.printWrongMove();
         return false;
     }
 
-    public String toString() {
+    public String getPieceSymbol() {
         return "p";
+    }
+
+    public String toString() {
+        return "pawn";
     }
 }

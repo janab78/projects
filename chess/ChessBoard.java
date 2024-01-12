@@ -86,10 +86,12 @@ public class ChessBoard {
             x = x + xMovement;
             y = y + yMovement;
             if (x == destXPos && y == destYPos && squares[x][y].isOccupied() && squares[x][y].getPiece().getColor() == move.getMovingPiece().getColor()) {
-                return false;
+                System.out.println("You cannot capture your own piece");
+                return false; //destination square is occupied by piece with same color
             }
             if ((x != destXPos || y != destYPos) && squares[x][y].isOccupied()) {
-                return false;
+                System.out.println("A piece is blocking the path for this move");
+                return false; // other piece is blocking the path somewhere between origin and destination square
             }
         } while (x != destXPos && y != destYPos);
         return true;
@@ -101,14 +103,14 @@ public class ChessBoard {
         for (int y = 8; y > 0; y--) {
             System.out.print(" " + y + "  | ");
             for (int x = 1; x < 9; x++) {
-                System.out.print(squares[x][y] + " ");
+                System.out.print(squares[x][y].getPieceSymbol() + " ");
                 System.out.print("| ");
             }
             System.out.println();
             System.out.println("     -------------------------------");
         }
         System.out.println();
-        System.out.print("     ");
+        System.out.print("      ");
         for (int letter = 65; letter < 73; letter++) {
             System.out.print((char)(letter) + "   ");
         }
