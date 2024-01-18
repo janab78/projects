@@ -1,11 +1,20 @@
+import java.util.HashMap;
+import java.util.ArrayList;
+
 public class ChessBoard {
 
     Square[][] squares;
+    HashMap<ChessColor, ChessPiece> kings;
+    HashMap<ChessColor, ArrayList<ChessPiece>> allOtherPieces;
 
     public ChessBoard() {
+        kings = new HashMap<>();
+        allOtherPieces = new HashMap<>();
+        allOtherPieces.put(ChessColor.WHITE, new ArrayList<>());
+        allOtherPieces.put(ChessColor.BLACK, new ArrayList<>());
         squares = new Square[9][9];
         createSquares();
-        populateSquares();
+        createAndPlacePieces();
     }
 
     private void createSquares() {
@@ -21,31 +30,40 @@ public class ChessBoard {
         }
     }
 
-    private void populateSquares() {
+    private void createAndPlacePieces() {
         for (int x = 1; x < 9; x++) {
-            squares[x][2].placePiece(new Pawn(ChessColor.WHITE, this));
-            squares[x][7].placePiece(new Pawn(ChessColor.BLACK, this));
+            storeAndPlacePiece(new Pawn(ChessColor.WHITE, this), x, 2);
+            storeAndPlacePiece(new Pawn(ChessColor.BLACK, this), x, 7);
             if (x == 1 || x == 8) {
-                squares[x][1].placePiece(new Rook(ChessColor.WHITE, this));
-                squares[x][8].placePiece(new Rook(ChessColor.BLACK, this));
+                storeAndPlacePiece(new Rook(ChessColor.WHITE, this), x, 1);
+                storeAndPlacePiece(new Rook(ChessColor.BLACK, this), x, 8);
             }
             if (x == 2 || x == 7) {
-                squares[x][1].placePiece(new Knight(ChessColor.WHITE, this));
-                squares[x][8].placePiece(new Knight(ChessColor.BLACK, this));
+                storeAndPlacePiece(new Knight(ChessColor.WHITE, this), x, 1);
+                storeAndPlacePiece(new Knight(ChessColor.BLACK, this), x, 8);
             }
             if (x == 3 || x == 6) {
-                squares[x][1].placePiece(new Bishop(ChessColor.WHITE, this));
-                squares[x][8].placePiece(new Bishop(ChessColor.BLACK, this));
+                storeAndPlacePiece(new Bishop(ChessColor.WHITE, this), x, 1);
+                storeAndPlacePiece(new Bishop(ChessColor.BLACK, this), x, 8);
             }
-            if (x == 4) {
-                squares[x][1].placePiece(new Queen(ChessColor.WHITE, this));
-                squares[x][8].placePiece(new Queen(ChessColor.BLACK, this));
+            if (x == 4) {                
+                storeAndPlacePiece(new Queen(ChessColor.WHITE, this), x, 1);
+                storeAndPlacePiece(new Queen(ChessColor.BLACK, this), x, 8);
             }
             if (x == 5) {
-                squares[x][1].placePiece(new King(ChessColor.WHITE, this));
-                squares[x][8].placePiece(new King(ChessColor.BLACK, this));
+                ChessPiece newWhiteKing = new King(ChessColor.WHITE, this);
+                squares[x][1].placePiece(newWhiteKing);
+                kings.put(ChessColor.WHITE, newWhiteKing);                
+                ChessPiece newBlackKing = new King(ChessColor.BLACK, this);
+                squares[x][8].placePiece(newBlackKing);                
+                kings.put(ChessColor.BLACK, newBlackKing);
             }
         }
+    }
+
+    private void storeAndPlacePiece(ChessPiece p, int x, int y) {
+        squares[x][y].placePiece(p);
+        allOtherPieces.get(p.getColor()).add(p);  
     }
 
     public Square getSquare(int x, int y) {
@@ -57,7 +75,11 @@ public class ChessBoard {
     }
 
     public void implementMove(Move move) {
-        move.setKilledPiece(move.getDestSquare().removePiece());
+        ChessPiece capturedPiece = move.getDestSquare().removePiece();
+        if (capturedPiece != null) {
+            capturedPiece.setCaptured();
+        }
+        move.setKilledPiece(capturedPiece);
         move.getDestSquare().placePiece(move.getMovingPiece());
         move.getOrgSquare().removePiece();
     }
@@ -90,7 +112,7 @@ public class ChessBoard {
                 return false; //destination square is occupied by piece with same color
             }
             if ((x != destXPos || y != destYPos) && squares[x][y].isOccupied()) {
-                System.out.println("A piece is blocking the path for this move");
+                System.out.println("The path is blocked by one or more pieces");
                 return false; // other piece is blocking the path somewhere between origin and destination square
             }
         } while (x != destXPos && y != destYPos);
@@ -98,7 +120,7 @@ public class ChessBoard {
     }
 
     public void display() {
-        System.out.println();
+        System.out.print(String.format("%c[%d;%df", 0x1B, 5, 0)); // move cursor to row 5
         System.out.println("     -------------------------------");
         for (int y = 8; y > 0; y--) {
             System.out.print(" " + y + "  | ");

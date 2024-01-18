@@ -71,7 +71,7 @@ public class ChessGame {
                     System.out.println("No piece to move");
                 }
                 else {
-                    System.out.println(curTurn + " can not move a " + movingPiece.getColor() + " piece");
+                    System.out.println(curTurn + " cannot move a " + movingPiece.getColor() + " piece");
                 }
             }
         }
