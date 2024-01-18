@@ -4,7 +4,7 @@ public class Knight extends ChessPiece {
         super(c, b);
     }
 
-    public boolean isLegalMove(Move selectedMove) {
+    public boolean isLegalMove(Move selectedMove, boolean output) {
         int xMovement = selectedMove.getOrgSquare().getXPos() - selectedMove.getDestSquare().getXPos();
         int yMovement = selectedMove.getOrgSquare().getYPos() - selectedMove.getDestSquare().getYPos();
         boolean destEmptyOrEnemy = true;
@@ -18,7 +18,7 @@ public class Knight extends ChessPiece {
             System.out.println("You cannot capture your own piece");
             return false;
         }
-        super.printWrongMove();
+        super.printWrongMove(output);
         return false;
     }
 

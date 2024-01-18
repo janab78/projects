@@ -6,7 +6,7 @@ public class Pawn extends ChessPiece {
         super(c, b);
     }
 
-    public boolean isLegalMove(Move selectedMove) {
+    public boolean isLegalMove(Move selectedMove, boolean output) {
         int xMovement = selectedMove.getOrgSquare().getXPos() - selectedMove.getDestSquare().getXPos();
         int yMovement = selectedMove.getOrgSquare().getYPos() - selectedMove.getDestSquare().getYPos();
         ChessPiece movingPiece = selectedMove.getMovingPiece();
@@ -39,7 +39,7 @@ public class Pawn extends ChessPiece {
                 return true;
             }
         }
-        super.printWrongMove();
+        super.printWrongMove(output);
         return false;
     }
 

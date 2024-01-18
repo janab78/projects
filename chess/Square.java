@@ -29,7 +29,9 @@ public class Square {
     public ChessPiece placePiece(ChessPiece p) {
         ChessPiece killedPiece = piece;
         piece = p;
-        piece.setSquare(this);
+        if (piece != null) {
+            piece.setSquare(this);
+        }
         return killedPiece;
     }
 

@@ -11,7 +11,7 @@ public abstract class ChessPiece {
         captured = false;
     }
 
-    public abstract boolean isLegalMove(Move selectedMove);
+    public abstract boolean isLegalMove(Move selectedMove, boolean output);
 
     public abstract String getPieceSymbol();
 
@@ -27,6 +27,10 @@ public abstract class ChessPiece {
         captured = true;
     }
 
+    public void setNotCaptured() {
+        captured = false;
+    }
+
     public void setSquare(Square s) {
         square = s;
     }
@@ -35,7 +39,9 @@ public abstract class ChessPiece {
         return square;
     }
 
-    public void printWrongMove() {
-        System.out.println("Incorrect move pattern for " + this);
+    public void printWrongMove(boolean output) {
+        if (output) {
+            System.out.println("Incorrect move pattern for " + this);
+        }
     }
 }

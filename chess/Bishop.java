@@ -6,13 +6,13 @@ public class Bishop extends ChessPiece {
         super(c, b);
     }
 
-    public boolean isLegalMove(Move selectedMove) {
+    public boolean isLegalMove(Move selectedMove, boolean output) {
         int xMovement = selectedMove.getOrgSquare().getXPos() - selectedMove.getDestSquare().getXPos();
         int yMovement = selectedMove.getOrgSquare().getYPos() - selectedMove.getDestSquare().getYPos();
         if (Math.abs(xMovement) == Math.abs(yMovement)) {
-            return board.isPathUnblocked(selectedMove);
+            return board.isPathUnblocked(selectedMove, output);
         }
-        super.printWrongMove();
+        super.printWrongMove(output);
         return false;
     }
 

@@ -57,10 +57,17 @@ public class ChessGame {
             clearScreen();
             ChessPiece movingPiece = selectedMove.getMovingPiece();
             if (movingPiece != null && movingPiece.getColor() == curTurn) {
-                if (movingPiece.isLegalMove(selectedMove)) {
+                if (movingPiece.isLegalMove(selectedMove, true)) {
                     board.implementMove(selectedMove);
-                    allMoves.add(selectedMove);
-                    curTurn = curTurn.getOpposite();
+                    if (board.piecesCheckingKing(curTurn).size() == 0) {
+                        allMoves.add(selectedMove);
+                        curTurn = curTurn.getOpposite();
+                    }
+                    else {
+                        System.out.println(curTurn + " (your own) king will be in check after this move");
+                        System.out.println("Illegal move: " + selectedMove);
+                        board.revertMove(selectedMove);
+                    }
                 }
                 else {
                     System.out.println("Illegal move: " + selectedMove);

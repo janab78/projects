@@ -84,7 +84,16 @@ public class ChessBoard {
         move.getOrgSquare().removePiece();
     }
 
-    public boolean isPathUnblocked(Move move) {
+    public void revertMove(Move move) {
+        ChessPiece capturedPiece = move.getKilledPiece();
+        if (capturedPiece != null) {
+            capturedPiece.setNotCaptured();
+        }
+        move.getOrgSquare().placePiece(move.getMovingPiece());
+        move.getDestSquare().placePiece(capturedPiece);
+    }
+
+    public boolean isPathUnblocked(Move move, boolean output) {
         int xMovement = 0;
         int yMovement = 0;
         int x = move.getOrgSquare().getXPos();
@@ -108,15 +117,32 @@ public class ChessBoard {
             x = x + xMovement;
             y = y + yMovement;
             if (x == destXPos && y == destYPos && squares[x][y].isOccupied() && squares[x][y].getPiece().getColor() == move.getMovingPiece().getColor()) {
-                System.out.println("You cannot capture your own piece");
+                if (output) {
+                    System.out.println("You cannot capture your own piece");
+                }
                 return false; //destination square is occupied by piece with same color
             }
             if ((x != destXPos || y != destYPos) && squares[x][y].isOccupied()) {
-                System.out.println("The path is blocked by one or more pieces");
+                if (output) {
+                    System.out.println("The path is blocked by one or more pieces");
+                }
                 return false; // other piece is blocking the path somewhere between origin and destination square
             }
         } while (x != destXPos && y != destYPos);
         return true;
+    }
+
+    public ArrayList<ChessPiece> piecesCheckingKing(ChessColor kingColor) {
+        ChessPiece king = kings.get(kingColor);
+        ArrayList<ChessPiece> oppositePieces = allOtherPieces.get(kingColor.getOpposite());
+        ArrayList<ChessPiece> kingSlayers = new ArrayList<>();
+        for (ChessPiece piece : oppositePieces) {
+            Move fromPieceToKing = new Move(piece.getSquare(), king.getSquare());
+            if (!(piece.isCaptured()) && piece.isLegalMove(fromPieceToKing, false)) {
+                kingSlayers.add(piece);
+            }
+        }
+        return kingSlayers;
     }
 
     public void display() {
