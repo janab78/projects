@@ -133,16 +133,19 @@ public class ChessBoard {
     }
 
     public ArrayList<ChessPiece> piecesCheckingKing(ChessColor kingColor) {
-        ChessPiece king = kings.get(kingColor);
-        ArrayList<ChessPiece> oppositePieces = allOtherPieces.get(kingColor.getOpposite());
         ArrayList<ChessPiece> kingSlayers = new ArrayList<>();
-        for (ChessPiece piece : oppositePieces) {
-            Move fromPieceToKing = new Move(piece.getSquare(), king.getSquare());
+        for (ChessPiece piece : allOtherPieces.get(kingColor.getOpposite())) {
+            Move fromPieceToKing = new Move(piece.getSquare(), kings.get(kingColor).getSquare());
             if (!(piece.isCaptured()) && piece.isLegalMove(fromPieceToKing, false)) {
                 kingSlayers.add(piece);
             }
         }
         return kingSlayers;
+    }
+
+    public boolean isCheckMate(ArrayList<ChessPiece> checkingPieces) {
+     //   ChessPiece king = kings.get(checkingPieces.get(0).getColor().getOpposite());
+        return false;
     }
 
     public void display() {

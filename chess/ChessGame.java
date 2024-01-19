@@ -61,6 +61,16 @@ public class ChessGame {
                     board.implementMove(selectedMove);
                     if (board.piecesCheckingKing(curTurn).size() == 0) {
                         allMoves.add(selectedMove);
+                        ArrayList<ChessPiece> piecesCheckingOppositeKing = board.piecesCheckingKing(curTurn.getOpposite());
+                        if (piecesCheckingOppositeKing.size() > 0) {
+                            if (board.isCheckMate(piecesCheckingOppositeKing)) {
+                                ongoing = false;
+                                System.out.println("Game over - " + curTurn + " win");
+                            }
+                            else {
+                                System.out.println(curTurn.getOpposite() + " is in check");
+                            }
+                        }
                         curTurn = curTurn.getOpposite();
                     }
                     else {
