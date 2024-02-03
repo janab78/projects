@@ -27,12 +27,12 @@ public class Square {
     }
 
     public ChessPiece placePiece(ChessPiece p) {
-        ChessPiece killedPiece = piece;
+        ChessPiece capturedPiece = piece;
         piece = p;
         if (piece != null) {
             piece.setSquare(this);
         }
-        return killedPiece;
+        return capturedPiece;
     }
 
     public ChessPiece getPiece() {

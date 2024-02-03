@@ -11,33 +11,39 @@ public class Pawn extends ChessPiece {
         int yMovement = selectedMove.getOrgSquare().getYPos() - selectedMove.getDestSquare().getYPos();
         ChessPiece movingPiece = selectedMove.getMovingPiece();
         ChessPiece destPiece = selectedMove.getDestSquare().getPiece();
-        if (movingPiece.getColor() == ChessColor.WHITE) {
-            if (destPiece != null && destPiece.getColor() == ChessColor.BLACK && 
-            Math.abs(xMovement) == 1 && yMovement == -1) {
+        int yDirection = 1;
+        int startRow = 2;
+        if (movingPiece.getColor() == ChessColor.BLACK) {
+            yDirection = -1;
+            startRow = 7;
+        }
+        if (selectedMove.getDestSquare().getYPos() == 1 || selectedMove.getDestSquare().getYPos() == 8) {
+            selectedMove.setPawnPromotion();
+        }
+        if (Math.abs(xMovement) == 1 && yMovement == (-1 * yDirection)) {
+            if (destPiece != null && destPiece.getColor() == movingPiece.getColor().getOpposite()) {
                 return true;
             }
-            else if (destPiece == null && xMovement == 0 &&
-            yMovement == -2 && selectedMove.getOrgSquare().getYPos() == 2) {
-                return true;
-            }
-            else if (destPiece == null && xMovement == 0 &&
-            yMovement == -1) {
-                return true;
+            else { //check en passant
+                if (selectedMove.getOrgSquare().getYPos() == startRow + (3 * yDirection)) {
+                    Move lastMove = board.getLastMove();
+                    if (lastMove.getMovingPiece() instanceof Pawn && 
+                        lastMove.getOrgSquare().getYPos() - lastMove.getDestSquare().getYPos() == 2 &&
+                        lastMove.getDestSquare().getXPos() == selectedMove.getDestSquare().getXPos()) {
+                        selectedMove.setEnPassant();
+                        return true;
+                    }
+                }
             }
         }
-        if (movingPiece.getColor() == ChessColor.BLACK) {
-            if (destPiece != null && destPiece.getColor() == ChessColor.WHITE && 
-            Math.abs(xMovement) == 1 && yMovement == 1) {
-                return true;
-            }
-            else if (destPiece == null && xMovement == 0 &&
-            yMovement == 2 && selectedMove.getOrgSquare().getYPos() == 7 && board.getPieceAtSquare(selectedMove.getOrgSquare().getXPos(), 6) == null) {
-                return true;
-            }
-            else if (destPiece == null && xMovement == 0 &&
-            yMovement == 1) {
-                return true;
-            }
+        else if (destPiece == null && xMovement == 0 &&
+        yMovement == (-2 * yDirection) && selectedMove.getOrgSquare().getYPos() == startRow && 
+        board.getPieceAtSquare(selectedMove.getOrgSquare().getXPos(), startRow + yDirection) == null) {
+            return true;
+        }
+        else if (destPiece == null && xMovement == 0 &&
+        yMovement == (-1 * yDirection)) {
+            return true;
         }
         super.printWrongMove(output);
         return false;

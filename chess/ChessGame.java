@@ -5,14 +5,12 @@ public class ChessGame {
     ChessColor curTurn;
     ChessBoard board;
     boolean ongoing;
-    ArrayList<Move> allMoves;
     Scanner inputScanner;
 
     public ChessGame() {
         curTurn = ChessColor.WHITE;
         board = new ChessBoard();
         ongoing = true;
-        allMoves = new ArrayList<Move>();
         inputScanner = new Scanner(System.in);
     }
 
@@ -33,17 +31,17 @@ public class ChessGame {
     private Move getMoveFromPlayer(Scanner sc) {
         String playerInput;
         do {
-            System.out.print("Enter move (e.g. \"a2 a4\" or \"q\" to quit): ");
+            System.out.print("Enter move (e.g. \"a2a4\" or \"q\" to quit): ");
             playerInput = sc.nextLine();
-        } while (!playerInput.matches("[a-h][1-8]\s[a-h][1-8]") && !playerInput.equals("q"));
+        } while (!playerInput.matches("[a-h][1-8][a-h][1-8]") && !playerInput.equals("q"));
         if (playerInput.equals("q")) {
             return null;
         }
-        String[] inputParts = playerInput.trim().split("\\s+");
-        int origXPos = (int)(inputParts[0].charAt(0)) - 96;
-        int origYPos = (int)(inputParts[0].charAt(1)) - 48;
-        int destXPos = (int)(inputParts[1].charAt(0)) - 96;
-        int destYPos = (int)(inputParts[1].charAt(1)) - 48;
+        playerInput.trim();
+        int origXPos = (int)(playerInput.charAt(0)) - 96;
+        int origYPos = (int)(playerInput.charAt(1)) - 48;
+        int destXPos = (int)(playerInput.charAt(2)) - 96;
+        int destYPos = (int)(playerInput.charAt(3)) - 48;
         return new Move(board.getSquare(origXPos, origYPos), board.getSquare(destXPos, destYPos));
     } 
 
@@ -60,7 +58,6 @@ public class ChessGame {
                 if (movingPiece.isLegalMove(selectedMove, true)) {
                     board.implementMove(selectedMove);
                     if (board.piecesCheckingKing(curTurn).size() == 0) {
-                        allMoves.add(selectedMove);
                         ArrayList<ChessPiece> piecesCheckingOppositeKing = board.piecesCheckingKing(curTurn.getOpposite());
                         if (piecesCheckingOppositeKing.size() > 0) {
                             if (board.isCheckMate(piecesCheckingOppositeKing)) {
@@ -68,13 +65,22 @@ public class ChessGame {
                                 System.out.println("Game over - " + curTurn + " win");
                             }
                             else {
+                                board.setCheck(curTurn.getOpposite());
                                 System.out.println(curTurn.getOpposite() + " is in check");
                             }
+                        }
+                        else {
+                            board.setNotCheck(curTurn.getOpposite());
                         }
                         curTurn = curTurn.getOpposite();
                     }
                     else {
-                        System.out.println(curTurn + " (your own) king will be in check after this move");
+                        if (board.isInCheck(curTurn)) {
+                            System.out.println(curTurn + " king will still be in check after this move");
+                        }
+                        else {
+                            System.out.println(curTurn + " (your own) king will be in check after this move");
+                        }
                         System.out.println("Illegal move: " + selectedMove);
                         board.revertMove(selectedMove);
                     }

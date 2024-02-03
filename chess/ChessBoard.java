@@ -6,6 +6,8 @@ public class ChessBoard {
     Square[][] squares;
     HashMap<ChessColor, ChessPiece> kings;
     HashMap<ChessColor, ArrayList<ChessPiece>> allOtherPieces;
+    ArrayList<Move> allMoves;
+
 
     public ChessBoard() {
         kings = new HashMap<>();
@@ -13,6 +15,7 @@ public class ChessBoard {
         allOtherPieces.put(ChessColor.WHITE, new ArrayList<>());
         allOtherPieces.put(ChessColor.BLACK, new ArrayList<>());
         squares = new Square[9][9];
+        allMoves = new ArrayList<>();
         createSquares();
         createAndPlacePieces();
     }
@@ -74,23 +77,94 @@ public class ChessBoard {
         return squares[x][y].getPiece();
     }
 
+    public ChessPiece removePieceAtSquare(int x, int y) {
+    return squares[x][y].removePiece();
+    }
+
+    public Move getLastMove() {
+        return allMoves.get(allMoves.size()-1);
+    }
+
     public void implementMove(Move move) {
-        ChessPiece capturedPiece = move.getDestSquare().removePiece();
+        ChessPiece capturedPiece = null;
+        if (move.isEnPassant()) {
+            Move lastMove = getLastMove();
+            capturedPiece = lastMove.getDestSquare().removePiece();
+        }
+        if (move.isCastling()) {
+            int xMovement = move.getDestSquare().getXPos() - move.getOrgSquare().getXPos();
+            ChessPiece rook;
+            int rookXDest;
+            if (xMovement == 2) {
+                rook = removePieceAtSquare(8, move.getDestSquare().getYPos());
+                rookXDest = 6;
+            }
+            else {
+                rook = removePieceAtSquare(1, move.getDestSquare().getYPos());
+                rookXDest = 4;
+            }
+            move.getDestSquare().placePiece(move.getMovingPiece());
+            move.getOrgSquare().removePiece();
+            getSquare(rookXDest, move.getOrgSquare().getYPos()).placePiece(rook);
+        }
+        if (move.isPawnPromotion()) {
+            move.getMovingPiece().setCaptured();
+            capturedPiece = move.getMovingPiece();
+            ChessPiece newQueen = new Queen(move.getMovingPiece().getColor(), this);
+            allOtherPieces.get(newQueen.getColor()).add(newQueen);
+            move.setMovingPiece(newQueen);
+        }
+        else {
+            capturedPiece = move.getDestSquare().removePiece();
+        }
         if (capturedPiece != null) {
             capturedPiece.setCaptured();
         }
-        move.setKilledPiece(capturedPiece);
+        move.setCapturedPiece(capturedPiece);
+
         move.getDestSquare().placePiece(move.getMovingPiece());
         move.getOrgSquare().removePiece();
+        allMoves.add(move);
+        move.getMovingPiece().addMove(move);
     }
 
     public void revertMove(Move move) {
-        ChessPiece capturedPiece = move.getKilledPiece();
+        ChessPiece capturedPiece = move.getCapturedPiece();
         if (capturedPiece != null) {
             capturedPiece.setNotCaptured();
         }
+        if (move.isPawnPromotion()) {
+            ChessPiece queen = move.getMovingPiece();
+            allOtherPieces.get(queen.getColor()).remove(queen);
+            move.setMovingPiece(move.getCapturedPiece());
+            move.setCapturedPiece(null);
+        }
         move.getOrgSquare().placePiece(move.getMovingPiece());
-        move.getDestSquare().placePiece(capturedPiece);
+        if (move.isEnPassant()) {
+            Square square = getSquare(move.getDestSquare().getXPos(), move.getOrgSquare().getYPos());
+            square.placePiece(capturedPiece);
+        }
+        else {
+            move.getDestSquare().placePiece(capturedPiece);
+        }
+        if (move.isCastling()) {
+            int xMovement = move.getDestSquare().getXPos() - move.getOrgSquare().getXPos();
+            ChessPiece rook;
+            int rookXDest;
+            if (xMovement == 2) {
+                rook = removePieceAtSquare(6, move.getDestSquare().getYPos());
+                rookXDest = 8;
+            }
+            else {
+                rook = removePieceAtSquare(4, move.getDestSquare().getYPos());
+                rookXDest = 1;
+            }
+            move.getDestSquare().placePiece(move.getMovingPiece());
+            move.getOrgSquare().removePiece();
+            getSquare(rookXDest, move.getOrgSquare().getYPos()).placePiece(rook);
+        }
+        allMoves.remove(move);
+        move.getMovingPiece().removeMove(move);
     }
 
     public boolean isPathUnblocked(Move move, boolean output) {
@@ -128,8 +202,20 @@ public class ChessBoard {
                 }
                 return false; // other piece is blocking the path somewhere between origin and destination square
             }
-        } while (x != destXPos && y != destYPos);
+        } while (x != destXPos || y != destYPos);
         return true;
+    }
+
+    public void setCheck(ChessColor color) {
+        kings.get(color).setCheck();
+    }
+
+    public void setNotCheck(ChessColor color) {
+        kings.get(color).setNotCheck();
+    }
+
+    public boolean isInCheck(ChessColor color) {
+        return kings.get(color).isInCheck();
     }
 
     public ArrayList<ChessPiece> piecesCheckingKing(ChessColor kingColor) {
