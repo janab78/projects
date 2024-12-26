@@ -14,8 +14,8 @@ public class Queen extends ChessPiece {
         return false;
     }
 
-    public String getPieceSymbol() {
-        return "q";
+    public char getPieceSymbol() {
+        return color == ChessColor.BLACK ? '\u2655' : '\u265B';
     }
 
     public String toString() {

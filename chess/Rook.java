@@ -14,8 +14,8 @@ public class Rook extends ChessPiece {
         return false;
     }
 
-    public String getPieceSymbol() {
-        return "r";
+    public char getPieceSymbol() {
+        return color == ChessColor.BLACK ? '\u2656' : '\u265C';
     }
 
     public String toString() {

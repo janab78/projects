@@ -49,8 +49,8 @@ public class Pawn extends ChessPiece {
         return false;
     }
 
-    public String getPieceSymbol() {
-        return "p";
+    public char getPieceSymbol() {
+        return color == ChessColor.BLACK ? '\u2659' : '\u265F';
     }
 
     public String toString() {

@@ -56,8 +56,8 @@ public class King extends ChessPiece {
         return inCheck;
     }
 
-    public String getPieceSymbol() {
-        return "k";
+    public char getPieceSymbol() {
+        return color == ChessColor.BLACK ? '\u2654' : '\u265A';
     }
 
     public String toString() {

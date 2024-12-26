@@ -16,8 +16,8 @@ public class Bishop extends ChessPiece {
         return false;
     }
 
-    public String getPieceSymbol() {
-        return "b";
+    public char getPieceSymbol() {
+        return color == ChessColor.BLACK ? '\u2657' : '\u265D';
     }
 
     public String toString() {

@@ -11,10 +11,10 @@ public class Knight extends ChessPiece {
         if (selectedMove.getDestSquare().getPiece() != null) {
             destEmptyOrEnemy = selectedMove.movingPiece.getColor() != selectedMove.getDestSquare().getPiece().getColor();
         }
-        if ((Math.abs(xMovement) == 1 && Math.abs(yMovement) == 2 || Math.abs(xMovement) == 2 && Math.abs(yMovement) == 1) && destEmptyOrEnemy) {
-            return true;
-        }
-        else if (destEmptyOrEnemy == false) {
+        if ((Math.abs(xMovement) == 1 && Math.abs(yMovement) == 2 || Math.abs(xMovement) == 2 && Math.abs(yMovement) == 1)) {
+            if (destEmptyOrEnemy) {
+                return true;
+            }
             System.out.println("You cannot capture your own piece");
             return false;
         }
@@ -22,8 +22,8 @@ public class Knight extends ChessPiece {
         return false;
     }
 
-    public String getPieceSymbol() {
-        return "n";
+    public char getPieceSymbol() {
+        return color == ChessColor.BLACK ? '\u2658' : '\u265E';
     }
 
     public String toString() {

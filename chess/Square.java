@@ -45,12 +45,12 @@ public class Square {
         return removedPiece;
     }
 
-    public String getPieceSymbol() {
+    public char getPieceSymbol() {
         if (piece == null) {
-            return " ";
+            return ' ';
         }
         if (piece.getColor() == ChessColor.WHITE) {
-            return piece.getPieceSymbol().toUpperCase();
+            return piece.getPieceSymbol();
         }
         else {
             return piece.getPieceSymbol();

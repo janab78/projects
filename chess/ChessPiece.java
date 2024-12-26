@@ -16,7 +16,7 @@ public abstract class ChessPiece {
 
     public abstract boolean isLegalMove(Move selectedMove, boolean output);
 
-    public abstract String getPieceSymbol();
+    public abstract char getPieceSymbol();
 
     public ChessColor getColor() {
         return color;
